@@ -28,17 +28,17 @@
         <p>#{{ idPokemon }}</p>
         <h1>Tipos de pokemon</h1>
         <div class="types">
-          <div :class="typePokemon1Style" style="margin-right: 30PX;">
+          <div :style="typePokemon1Style" style="margin-right: 30PX;" id="typePokemon">
             <h3>{{ tipoPokemon1 }}</h3>
           </div>
-          <div :class="typePokemon2Style">
+          <div :style="typePokemon2Style" id="typePokemon" v-if="tipoPokemon2">
             <h3>{{ tipoPokemon2 }}</h3>
           </div>
         </div>
         <div class="fila2_2">
           <h1>Debilidades</h1>
           <div class="weaknesses">
-            <div v-for="weakness in weaknesses" :key="weakness" class="weakness">
+            <div v-for="weakness in weaknesses" :key="weakness" class="weakness" :style="getTypeStyle(weakness)">
               <span>{{ weakness }}</span>
             </div>
           </div>
@@ -48,28 +48,28 @@
         <h1 v-if="nombre">Stats</h1>
         <div v-if="nombre" class="stats">
           <div class="stat">
-            <span>HP:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.hp) }"></div>
+            <span>HP:</span> 
+            <div class="bar" :style="{ width: calculateBarWidth(stats.hp) }"></div> <span>{{ stats.hp}}/255</span>
           </div>
           <div class="stat">
             <span>Attack:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.attack) }"></div>
+            <div class="bar" :style="{ width: calculateBarWidth(stats.attack) }"></div> <span>{{ stats.attack}}/255</span>
           </div>
           <div class="stat">
             <span>Defense:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.defense) }"></div>
+            <div class="bar" :style="{ width: calculateBarWidth(stats.defense) }"></div> <span>{{ stats.defense}}/255</span>
           </div>
           <div class="stat">
             <span>Special Attack:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.specialAttack) }"></div>
+            <div class="bar" :style="{ width: calculateBarWidth(stats.specialAttack) }"></div> <span>{{ stats.specialAttack}}/255</span>
           </div>
           <div class="stat">
             <span>Special Defense:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.specialDefense) }"></div>
+            <div class="bar" :style="{ width: calculateBarWidth(stats.specialDefense) }"></div> <span>{{ stats.specialDefense}}/255</span>
           </div>
           <div class="stat">
             <span>Speed:</span>
-            <div class="bar" :style="{ width: calculateBarWidth(stats.speed) }"></div>
+            <div class="bar" :style="{ width: calculateBarWidth(stats.speed) }"></div> <span>{{ stats.speed}}/255</span>
           </div>
         </div>
       </div>
@@ -81,10 +81,10 @@
   </div>
 
 
+
+
+
 </template>
-
-
-
 
 
 <script setup>
@@ -168,6 +168,35 @@ function getBackgroundColor(type) {
   }
 }
 
+function getTypeStyle(type) {
+    switch (type.toLowerCase()) {
+      case 'fire':
+      return 'background-color: red;';
+    case 'water':
+      return 'background-color: blue;';
+    case 'grass':
+      return 'background-color: green;';
+    case 'fighting':
+      return 'background-color: orange;';
+    case 'electric':
+      return 'background-color: yellow;';
+    case 'ice':
+      return 'background-color: lightblue;';
+    case 'poison':
+      return 'background-color: pink;';
+    case 'flying':
+      return 'background-color: skyblue;';
+    case 'psychic':
+      return 'background-color: purple;';
+    case 'bug':
+      return 'background-color: limegreen;';
+    case 'rock':
+      return 'background-color: goldenrod;';
+    default:
+      return 'background-color: grey;';
+    }
+  }
+
 function calculateBarWidth(stat) {
   const maxStat = 255;
   const percentage = (stat / maxStat) * 100;
@@ -185,6 +214,8 @@ async function getWeaknesses(types) {
   }
   return Array.from(weaknesses);
 }
+
+
 
 const typePokemon1Style = computed(() => getBackgroundColor(tipoPokemon1.value));
 const typePokemon2Style = computed(() => getBackgroundColor(tipoPokemon2.value));
@@ -286,10 +317,11 @@ const columna1Style = computed(() => getBackgroundColor(tipoPokemon1.value));
   margin-top: 23px;
 }
 
-.typePokemon {
-  display: flex;
-  justify-content: center;
-  margin: 20px;
+#typePokemon{
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .weaknesses {
@@ -300,8 +332,6 @@ const columna1Style = computed(() => getBackgroundColor(tipoPokemon1.value));
 }
 
 .weakness {
-  background-color: #f44336;
-  color: white;
   padding: 5px 10px;
   margin: 5px;
   border-radius: 5px;
